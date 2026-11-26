@@ -1,0 +1,7 @@
+{
+  "name": "survey-agent-local",
+  "owner": { "name": "Fabiano Dicheti" },
+  "plugins": [
+    { "name": "survey-agent", "source": "./", "description": "Literature-survey pipeline: tools, skills and agents." }
+  ]
+}

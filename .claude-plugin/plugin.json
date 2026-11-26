@@ -1,0 +1,8 @@
+{
+  "name": "survey-agent",
+  "version": "0.1.0",
+  "description": "An agent-driven pipeline for writing literature surveys: index, taxonomy gate, gap audit, DOI-verified fetch lists, synthesis, drafting, verification, SBC/LaTeX production, review triage and translation.",
+  "author": { "name": "Fabiano Dicheti" },
+  "license": "MIT",
+  "keywords": ["survey", "literature-review", "systematic-review", "taxonomy", "research"]
+}

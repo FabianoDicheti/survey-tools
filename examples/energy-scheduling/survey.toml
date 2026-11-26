@@ -1,0 +1,121 @@
+# A worked example: a survey of energy-aware job scheduling in data centres.
+# Copy into an empty directory and run `survey --ws <dir> init` to scaffold it.
+
+[survey]
+title       = "Who Saves the Joule: Decision Scope × Information Horizon in Energy-Aware Data-Centre Scheduling"
+short_title = "energy-aware scheduling"
+topic       = "How data-centre schedulers trade energy for performance, organised by where the scheduling decision is taken and how far ahead it looks."
+venue       = "ACM Computing Surveys"
+style       = "acm"
+language    = "en"
+owner       = "the owner"
+started     = "2026-11-26"
+source_root = ".."
+
+[taxonomy]
+axes = [
+  { id = "scope",   poles = ["node", "cluster"] },
+  { id = "horizon", poles = ["reactive", "predictive"] },
+]
+cells = [
+  { id = "E1", dir = "E1_node_reactive",       name = "node-reactive",       at = ["node", "reactive"],      test = "decided on one machine from current load (DVFS governors, idle states)" },
+  { id = "E2", dir = "E2_node_predictive",     name = "node-predictive",     at = ["node", "predictive"],    test = "decided on one machine from a model of future load" },
+  { id = "E3", dir = "E3_cluster_reactive",    name = "cluster-reactive",    at = ["cluster", "reactive"],   test = "decided across machines from current state (consolidation, power capping)" },
+  { id = "E4", dir = "E4_cluster_predictive",  name = "cluster-predictive",  at = ["cluster", "predictive"], test = "decided across machines from forecasts (carbon-aware shifting, provisioning)" },
+]
+crosscut = { id = "EX", dir = "EX_crosscut", name = "performance–energy trade-off across cells" }
+context  = { id = "EC", dir = "EC_context",  name = "electricity cost and carbon pressure" }
+out = "OUT"
+
+[thresholds]
+min_citable_per_cell = 8
+recency_year         = 2023
+min_recent_per_cell  = 1
+crosscut_max_share   = 0.15
+split_max_share      = 0.15
+unexplained_out_max  = 5
+context_pt_min       = 0.50
+market_max_in_intro  = 2
+
+[thresholds.gate1]
+n = 30
+seed = 20261126
+agree_pass = 0.70
+agree_fatal = 0.60
+doubles_max = 0.20
+spread_min = 3
+
+# Inherited references (optional): a prior thesis whose bibliography is split by topic cluster.
+# [[origins]]
+# id            = "prior_thesis"
+# adapter       = "bib"
+# root          = "../prior_thesis"
+# bib           = ["90_bib/refs_[A-D].bib"]
+# cluster_regex = "refs_([A-D])\\.bib"
+# corrections   = "90_bib/CITEKEY_CORRECTIONS.md"
+# seed = { A = "E1", B = "split(E3|E4)", C = "E4", "*" = "OUT" }
+
+[paper]
+chapters = [
+  { stem = "00_front",              role = "front" },
+  { stem = "01_introduction",       role = "intro" },
+  { stem = "02_pressure",           role = "context",    track = "EC" },
+  { stem = "03_scope_method",       role = "method" },
+  { stem = "04_node_reactive",      role = "body",       track = "E1" },
+  { stem = "05_node_predictive",    role = "body",       track = "E2" },
+  { stem = "06_cluster_reactive",   role = "body",       track = "E3" },
+  { stem = "07_cluster_predictive", role = "body",       track = "E4" },
+  { stem = "08_crosscut",           role = "crosscut",   track = "EX" },
+  { stem = "09_gap",                role = "gap" },
+  { stem = "10_conclusion",         role = "conclusion" },
+  { stem = "90_references",         role = "references" },
+  { stem = "95_appendix",           role = "appendix" },
+]
+
+[classes.M]
+allowed_roles = ["intro", "context"]
+snapshot_dir  = "90_bib/market"
+
+[placeholders]
+namespaces = ["ASK", "MEASURE", "DECIDE", "DRAFT", "FETCH"]
+
+[guards]
+blocked = []
+forbidden_phrases = [
+  { regex = "energy (instead of|rather than) performance", why = "the survey's claim is a trade-off frontier, not a replacement", roles = ["crosscut", "intro", "conclusion"] },
+]
+inherited_numbers = []
+attribution_regex = "(reported by|according to|[A-Z][a-z]+ et al)"
+prose_word_keys   = []
+corporate_authors = "Google|Microsoft|Meta|Amazon|Alibaba|IEA|Uptime Institute"
+
+[[timeline.eras]]
+from = 0
+to = 2006
+title = "Power management arrives in the processor"
+gloss = "DVFS and idle states make energy a per-node, reactive control problem."
+
+[[timeline.eras]]
+from = 2007
+to = 2015
+title = "The warehouse-scale computer"
+gloss = "Consolidation, energy proportionality and cluster-wide power capping."
+
+[[timeline.eras]]
+from = 2016
+to = 9999
+title = "Prediction and carbon"
+gloss = "Learned load forecasts, carbon-intensity signals and temporal workload shifting."
+
+[build]
+paper_size = "letter"
+font = "Times New Roman"
+font_size_pt = 10
+margins_cm = { top = 2.5, bottom = 2.5, left = 2.0, right = 2.0 }
+authors = []
+
+[translate]
+target = "pt-BR"
+glossary = ""
+decimal_comma = true
+forbid_em_dash = true

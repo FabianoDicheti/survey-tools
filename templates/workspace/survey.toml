@@ -1,0 +1,111 @@
+# survey.toml — the single source of truth for this survey workspace.
+# Every tool, skill and agent reads names, cells, thresholds and paths from here.
+# Nothing else may restate a threshold. See examples/energy-scheduling/survey.toml
+# for a complete, worked configuration.
+
+[survey]
+title       = "{{title}}"
+short_title = ""
+topic       = ""            # one sentence: what the survey establishes
+venue       = ""            # e.g. JBCS, ACM CSUR, IEEE Access
+style       = "sbc"         # sbc | ieee | acm | generic
+language    = "en"
+owner       = ""            # the human who fetches PDFs and decides at gates
+started     = "{{date}}"
+source_root = ".."          # where origin-relative source_md paths resolve
+
+# ---- the taxonomy: the contribution ----------------------------------------
+# A taxonomy that cannot be stated as independent axes cannot be tested.
+# Cells are the axes' crossings; crosscut/context are tracks, not cells.
+[taxonomy]
+axes = [
+  { id = "axis1", poles = ["pole_a", "pole_b"] },
+  { id = "axis2", poles = ["pole_c", "pole_d"] },
+]
+cells = [
+  { id = "C1", dir = "C1_name", name = "…", at = ["pole_a", "pole_c"], test = "one-line membership test" },
+  { id = "C2", dir = "C2_name", name = "…", at = ["pole_b", "pole_c"], test = "" },
+  { id = "C3", dir = "C3_name", name = "…", at = ["pole_b", "pole_d"], test = "" },
+  { id = "C4", dir = "C4_name", name = "…", at = ["pole_a", "pole_d"], test = "" },
+]
+# crosscut = { id = "X", dir = "X_crosscut", name = "…" }   # reads syntheses only, adds no evidence
+# context  = { id = "CTX", dir = "CTX_context", name = "…" } # the 'why now' track; class-M allowed
+out = "OUT"
+
+[thresholds]
+min_citable_per_cell = 8
+recency_year         = 2023
+min_recent_per_cell  = 1
+crosscut_max_share   = 0.15
+split_max_share      = 0.15
+unexplained_out_max  = 5
+context_pt_min       = 0.50
+market_max_in_intro  = 2
+
+[thresholds.gate1]
+n = 30
+seed = 20260822
+agree_pass = 0.70
+agree_fatal = 0.60
+doubles_max = 0.20
+spread_min = 3
+
+# ---- where inherited references come from (optional) -----------------------
+# [[origins]]
+# id            = "prior_thesis"
+# adapter       = "bib"
+# root          = "../prior_thesis"
+# bib           = ["90_bib/refs_*.bib"]
+# cluster_regex = "refs_([A-Z])\\.bib"
+# corrections   = "90_bib/CITEKEY_CORRECTIONS.md"
+# seed          = { A = "C1", B = "split(C2|C3)", "*" = "C4" }
+
+# ---- the paper --------------------------------------------------------------
+# roles: front intro context method body crosscut gap conclusion references appendix
+[paper]
+chapters = [
+  { stem = "00_front",        role = "front" },
+  { stem = "01_introduction", role = "intro" },
+  { stem = "02_scope_method", role = "method" },
+  { stem = "03_c1",           role = "body", track = "C1" },
+  { stem = "04_c2",           role = "body", track = "C2" },
+  { stem = "05_c3",           role = "body", track = "C3" },
+  { stem = "06_c4",           role = "body", track = "C4" },
+  { stem = "07_gap",          role = "gap" },
+  { stem = "08_conclusion",   role = "conclusion" },
+  { stem = "90_references",   role = "references" },
+  { stem = "95_appendix",     role = "appendix" },
+]
+
+[classes.M]
+allowed_roles = ["intro", "context"]
+snapshot_dir  = "90_bib/market"
+
+[placeholders]
+namespaces = ["ASK", "MEASURE", "DECIDE", "DRAFT", "FETCH"]
+
+[guards]
+blocked           = []      # in-tree prose that is not evidence (also list it in DO_NOT_CITE.md)
+forbidden_phrases = []      # { regex = "...", why = "...", roles = ["crosscut"] }
+inherited_numbers = []      # numbers from sibling workspaces that must be attributed
+prose_word_keys   = []      # citekeys that are also ordinary words
+corporate_authors = ""      # extra regex alternatives for corporate authors
+
+# [[timeline.eras]]
+# from = 0
+# to = 1999
+# title = "…"
+# gloss = "…"
+
+[build]
+paper_size = "a4"
+font = "Times New Roman"
+font_size_pt = 12
+margins_cm = { top = 3.5, bottom = 2.5, left = 3.0, right = 3.0 }   # SBC
+authors = []
+
+[translate]
+target = "pt-BR"
+glossary = ""               # a markdown table | EN | TARGET |
+decimal_comma = true
+forbid_em_dash = true

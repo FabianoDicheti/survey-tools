@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Launcher for the surveykit CLI. Needs only python3 >= 3.11 (stdlib only); no install.
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PY="${SURVEY_PYTHON:-python3}"
+PYTHONPATH="$ROOT${PYTHONPATH:+:$PYTHONPATH}" exec "$PY" -m surveykit "$@"
